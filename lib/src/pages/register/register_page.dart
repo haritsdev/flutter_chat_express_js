@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RegisterPage extends StatelessWidget {
-  RegisterController con = RegisterController();
+  RegisterController con = Get.put(RegisterController());
 
   @override
   Widget build(BuildContext context) {
@@ -224,10 +224,16 @@ class RegisterPage extends StatelessWidget {
   }
 
   Widget _imageUser(BuildContext context) {
-    return CircleAvatar(
-      backgroundImage: AssetImage('assets/img/user_profile_2.png'),
-      radius: 60,
-      backgroundColor: Colors.grey[300],
-    );
+    return GestureDetector(
+        onTap: () => con.showAlertDialog(context),
+        child: GetBuilder<RegisterController>(
+          builder: (value) => CircleAvatar(
+            backgroundImage: con.imageFile != null
+                ? FileImage(con.imageFile!)
+                : AssetImage('assets/img/user_profile_2.png') as ImageProvider,
+            radius: 60,
+            backgroundColor: Colors.grey[300],
+          ),
+        ));
   }
 }

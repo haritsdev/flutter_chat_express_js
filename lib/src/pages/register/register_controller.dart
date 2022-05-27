@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:chat_udemy/src/providers/users_provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:image_picker/image_picker.dart';
 import '../../models/user.dart';
 
 class RegisterController extends GetxController {
@@ -13,6 +16,11 @@ class RegisterController extends GetxController {
   TextEditingController confirmPasswordController = TextEditingController();
 
   UsersProvider usersProvider = UsersProvider();
+
+  ImagePicker picker = ImagePicker();
+  File? imageFile;
+
+  var number = 0.obs;
 
   void register() async {
     String email = emailController.text.trim();
@@ -38,6 +46,42 @@ class RegisterController extends GetxController {
         clearForm();
       }
     }
+  }
+
+  Future selectImage(ImageSource imageSource) async {
+    // Pick an image
+
+    final XFile? image = await picker.pickImage(source: imageSource);
+    if (image != null) {
+      imageFile = File(image.path);
+      update();
+    }
+  }
+
+  void showAlertDialog(BuildContext context) {
+    Widget galleryButton = ElevatedButton(
+        onPressed: () {
+          Get.back();
+          selectImage(ImageSource.gallery);
+        },
+        child: Text('Gallery'));
+    Widget cameraButton = ElevatedButton(
+        onPressed: () {
+          Get.back();
+          selectImage(ImageSource.camera);
+        },
+        child: Text('Camera'));
+
+    AlertDialog alertDialog = AlertDialog(
+      title: Text('Pilih gambar'),
+      actions: [galleryButton, cameraButton],
+    );
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
   }
 
   void clearForm() {
