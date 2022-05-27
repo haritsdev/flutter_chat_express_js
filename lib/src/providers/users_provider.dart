@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:chat_udemy/src/models/response_api.dart';
 import 'package:chat_udemy/src/utils/api.dart';
 import 'package:get/get.dart';
@@ -20,14 +20,23 @@ class UsersProvider extends GetConnect {
     return response;
   }
 
+  Future<Stream> createWithImage(User user, File image) async {
+    Uri url = Uri.http('192.168.43.12:3003', 'api/users/registerWithImage');
+    final request = http.MultipartRequest('POST', url);
+    request.files.add(http.MultipartFile(
+        'image', http.ByteStream(image.openRead().cast()), await image.length(),
+        filename: basename(image.path)));
+
+    request.fields['user'] = json.encode(user);
+    final response = await request.send();
+    return response.stream.transform(utf8.decoder);
+  }
+
   Future<ResponseApi> registerUsersWithImage(User user, File image) async {
     FormData form = FormData({
       'image': MultipartFile(image, filename: basename(image.path)),
       'user': json.encode(user)
     });
-    print('Image $image');
-    print('user $user');
-    print('Isi form: $form');
 
     Response response = await post('$userUrl/registerWithImage', form);
     if (response.body == null) {

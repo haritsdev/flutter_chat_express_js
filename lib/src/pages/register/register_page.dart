@@ -31,14 +31,14 @@ class RegisterPage extends StatelessWidget {
               child: Column(
                 children: [
                   _imageUser(context),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   _textFieldEmail(),
                   _textFieldName(),
                   _textFieldLastName(),
                   _textFieldPhone(),
                   _textFieldPassword(),
                   _textFieldConfirmPassword(),
-                  _buttonRegister(),
+                  _buttonRegister(context),
                 ],
               ),
             ),
@@ -55,7 +55,7 @@ class RegisterPage extends StatelessWidget {
   }
 
   Widget _textRegister() {
-    return Text(
+    return const Text(
       'REGISTER',
       style: TextStyle(
           color: Colors.white,
@@ -65,25 +65,25 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-  Widget _buttonRegister() {
+  Widget _buttonRegister(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+      margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
       child: ElevatedButton(
-        onPressed: () => con.register(),
-        child: Text('REGISTRARSE'),
+        onPressed: () => con.register(context),
+        child: const Text('MENDAFTAR'),
         style: ElevatedButton.styleFrom(
             primary: MyColors.primaryColor,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            padding: EdgeInsets.symmetric(vertical: 15)),
+            padding: const EdgeInsets.symmetric(vertical: 15)),
       ),
     );
   }
 
   Widget _textFieldPassword() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
       decoration: BoxDecoration(
           color: MyColors.primaryOpacityColor,
           borderRadius: BorderRadius.circular(30)),
@@ -93,7 +93,7 @@ class RegisterPage extends StatelessWidget {
         decoration: InputDecoration(
             hintText: 'Password',
             border: InputBorder.none,
-            contentPadding: EdgeInsets.all(15),
+            contentPadding: const EdgeInsets.all(15),
             hintStyle: TextStyle(color: MyColors.primaryColorDark),
             prefixIcon: Icon(
               Icons.lock,
@@ -105,7 +105,7 @@ class RegisterPage extends StatelessWidget {
 
   Widget _textFieldConfirmPassword() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
       decoration: BoxDecoration(
           color: MyColors.primaryOpacityColor,
           borderRadius: BorderRadius.circular(30)),
@@ -115,7 +115,7 @@ class RegisterPage extends StatelessWidget {
         decoration: InputDecoration(
             hintText: 'Password Confirmation',
             border: InputBorder.none,
-            contentPadding: EdgeInsets.all(15),
+            contentPadding: const EdgeInsets.all(15),
             hintStyle: TextStyle(color: MyColors.primaryColorDark),
             prefixIcon: Icon(
               Icons.lock,
@@ -127,7 +127,7 @@ class RegisterPage extends StatelessWidget {
 
   Widget _textFieldName() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
       decoration: BoxDecoration(
           color: MyColors.primaryOpacityColor,
           borderRadius: BorderRadius.circular(30)),
@@ -137,7 +137,7 @@ class RegisterPage extends StatelessWidget {
         decoration: InputDecoration(
             hintText: 'Nama Depan',
             border: InputBorder.none,
-            contentPadding: EdgeInsets.all(15),
+            contentPadding: const EdgeInsets.all(15),
             hintStyle: TextStyle(color: MyColors.primaryColorDark),
             prefixIcon: Icon(
               Icons.person,
@@ -149,7 +149,7 @@ class RegisterPage extends StatelessWidget {
 
   Widget _textFieldLastName() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
       decoration: BoxDecoration(
           color: MyColors.primaryOpacityColor,
           borderRadius: BorderRadius.circular(30)),
@@ -171,7 +171,7 @@ class RegisterPage extends StatelessWidget {
 
   Widget _textFieldPhone() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
       decoration: BoxDecoration(
           color: MyColors.primaryOpacityColor,
           borderRadius: BorderRadius.circular(30)),
@@ -181,7 +181,7 @@ class RegisterPage extends StatelessWidget {
         decoration: InputDecoration(
             hintText: 'No telepon',
             border: InputBorder.none,
-            contentPadding: EdgeInsets.all(15),
+            contentPadding: const EdgeInsets.all(15),
             hintStyle: TextStyle(color: MyColors.primaryColorDark),
             prefixIcon: Icon(
               Icons.phone,
@@ -193,7 +193,7 @@ class RegisterPage extends StatelessWidget {
 
   Widget _textFieldEmail() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
       decoration: BoxDecoration(
           color: MyColors.primaryOpacityColor,
           borderRadius: BorderRadius.circular(30)),
@@ -203,7 +203,7 @@ class RegisterPage extends StatelessWidget {
         decoration: InputDecoration(
             hintText: 'Masukan Email anda',
             border: InputBorder.none,
-            contentPadding: EdgeInsets.all(15),
+            contentPadding: const EdgeInsets.all(15),
             hintStyle: TextStyle(color: MyColors.primaryColorDark),
             prefixIcon: Icon(
               Icons.email,
@@ -230,7 +230,8 @@ class RegisterPage extends StatelessWidget {
           builder: (value) => CircleAvatar(
             backgroundImage: con.imageFile != null
                 ? FileImage(con.imageFile!)
-                : AssetImage('assets/img/user_profile_2.png') as ImageProvider,
+                : const AssetImage('assets/img/user_profile_2.png')
+                    as ImageProvider,
             radius: 60,
             backgroundColor: Colors.grey[300],
           ),

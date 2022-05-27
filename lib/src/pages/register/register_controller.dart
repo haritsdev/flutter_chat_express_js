@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:chat_udemy/src/models/response_api.dart';
@@ -5,7 +6,10 @@ import 'package:chat_udemy/src/providers/users_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sn_progress_dialog/completed.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 import '../../models/user.dart';
 
 class RegisterController extends GetxController {
@@ -23,7 +27,7 @@ class RegisterController extends GetxController {
 
   var number = 0.obs;
 
-  void register() async {
+  void register(BuildContext context) async {
     String email = emailController.text.trim();
     String name = nameController.text;
     String lastname = lastnameController.text;
@@ -32,6 +36,17 @@ class RegisterController extends GetxController {
     String confirmPassword = confirmPasswordController.text.trim();
 
     if (isValidForm(email, name, lastname, phone, password, confirmPassword)) {
+      ProgressDialog progressDialog = ProgressDialog(context: context);
+      progressDialog.show(
+          max: 100,
+          msg: 'Loading registration',
+          completed: Completed(
+              // completedMsg: "Sukses Registrasi",
+              // closedDelay: 2500,
+              // completedImage: const AssetImage('assets/img/completed.png')
+
+              ));
+
       User user = User(
         email: email,
         name: name,
@@ -40,15 +55,20 @@ class RegisterController extends GetxController {
         password: password,
       );
 
-      ResponseApi responseApi =
-          await usersProvider.registerUsersWithImage(user, imageFile!);
+      Stream stream = await usersProvider.createWithImage(user, imageFile!);
+      stream.listen((res) {
+        ResponseApi responseApi = ResponseApi.fromJson(json.decode(res));
 
-      if (responseApi.success == true) {
-        clearForm();
-        goToHomePage();
-      } else {
-        Get.snackbar('User gagal dibuat', responseApi.message!);
-      }
+        progressDialog.close();
+        if (responseApi.success == true) {
+          clearForm();
+          User user = User.fromJson(responseApi.data);
+          GetStorage().write('user', user.toJson());
+          goToHomePage();
+        } else {
+          Get.snackbar('User gagal dibuat', responseApi.message!);
+        }
+      });
     }
   }
 
