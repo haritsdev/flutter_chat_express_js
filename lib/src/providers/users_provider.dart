@@ -1,7 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:chat_udemy/src/models/response_api.dart';
 import 'package:chat_udemy/src/utils/api.dart';
 import 'package:get/get.dart';
-
+import 'package:path/path.dart';
 import '../models/user.dart';
 
 class UsersProvider extends GetConnect {
@@ -15,6 +18,25 @@ class UsersProvider extends GetConnect {
     );
 
     return response;
+  }
+
+  Future<ResponseApi> registerUsersWithImage(User user, File image) async {
+    FormData form = FormData({
+      'image': MultipartFile(image, filename: basename(image.path)),
+      'user': json.encode(user)
+    });
+    print('Image $image');
+    print('user $user');
+    print('Isi form: $form');
+
+    Response response = await post('$userUrl/registerWithImage', form);
+    if (response.body == null) {
+      Get.snackbar('Terjadi Kesalahan', 'Terjadi kesalah dalam registrasi');
+      return ResponseApi();
+    }
+
+    ResponseApi responseApi = ResponseApi.fromJson(response.body);
+    return responseApi;
   }
 
   Future<ResponseApi> login(String email, String password) async {

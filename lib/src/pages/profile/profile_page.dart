@@ -49,8 +49,7 @@ class ProfilePage extends StatelessWidget {
               child: FadeInImage.assetNetwork(
                   fit: BoxFit.cover,
                   placeholder: 'assets/img/user_profile_2.png',
-                  image:
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSc3kjlStY8R3eum4D5g_bt4AuchFYlhLtDuA&usqp=CAU')),
+                  image: con.user.image!)),
         ),
       ),
     );

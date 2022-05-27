@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat_udemy/src/models/response_api.dart';
 import 'package:chat_udemy/src/providers/users_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,14 +39,21 @@ class RegisterController extends GetxController {
         phone: phone,
         password: password,
       );
-      Response response = await usersProvider.create(user);
 
-      if (response.body['success'] == true) {
-        print('GET RESULT');
-        print('Response: ${response.body}');
+      ResponseApi responseApi =
+          await usersProvider.registerUsersWithImage(user, imageFile!);
+
+      if (responseApi.success == true) {
         clearForm();
+        goToHomePage();
+      } else {
+        Get.snackbar('User gagal dibuat', responseApi.message!);
       }
     }
+  }
+
+  void goToHomePage() {
+    Get.offNamedUntil('/home', (route) => false);
   }
 
   Future selectImage(ImageSource imageSource) async {
@@ -126,6 +134,11 @@ class RegisterController extends GetxController {
 
     if (password != confirmPassword) {
       Get.snackbar('User is not valid', 'Password confirmasi tidak sama');
+      return false;
+    }
+
+    if (imageFile == null) {
+      Get.snackbar('Terjadi Kesalahan', 'Photo profile harus di upload');
       return false;
     }
 
